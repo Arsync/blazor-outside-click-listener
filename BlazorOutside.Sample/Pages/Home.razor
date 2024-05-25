@@ -1,0 +1,59 @@
+﻿@page "/"
+@using BlazorOutside.Components
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, world!</h1>
+
+<OutsideClickListener Class="bo-frame" ClickOutside="OnClickOutside" Capture>
+    <p>Welcome to your new app.</p>
+    @if (!_isClickedOutside)
+    {
+        <p>Now click outside the frame to hide this:</p>
+        <ul>
+            <li>Item 1</li>
+            <li>Item 2</li>
+            <li>Item 3</li>
+            <li>Item 4</li>
+            <li>Item 5</li>
+        </ul>
+    }
+    else
+    {
+        <div>You clicked outside this frame!</div>
+        <div class="btn btn-primary" @onclick="RestoreState">Show again</div>
+        <br/>
+        <br/>
+        <div>Important thing is "capture: true" on event listener options. Otherwise, Blazor click events will be raised first.</div>
+        <div>window.addEventListener(eventName, listener, { capture: true });</div>
+    }
+</OutsideClickListener>
+
+@code {
+
+    private bool _isClickedOutside;
+
+    private void OnClickOutside()
+    {
+        _isClickedOutside = true;
+        StateHasChanged();
+    }
+
+    private void RestoreState(MouseEventArgs args)
+    {
+        _isClickedOutside = false;
+        StateHasChanged();
+    }
+}
+
+<style>
+    .bo-frame {
+        padding: 2em;
+        border: solid 4px #CCC;
+        background: ivory;
+    }
+
+    .bo-frame * {
+        margin-bottom: 0;
+    }
+</style>
